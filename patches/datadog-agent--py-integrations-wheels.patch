@@ -1,0 +1,26 @@
+diff --git a/omnibus/config/software/datadog-agent-integrations-py2.rb b/omnibus/config/software/datadog-agent-integrations-py2.rb
+index 82541b5406d7..51109f9ff1eb 100644
+--- a/omnibus/config/software/datadog-agent-integrations-py2.rb
++++ b/omnibus/config/software/datadog-agent-integrations-py2.rb
+@@ -12,7 +12,7 @@
+ dependency 'pip2'
+ 
+ 
+-if arm?
++if arm? && !osx?
+   # psycopg2 doesn't come with pre-built wheel on the arm architecture.
+   # to compile from source, it requires the `pg_config` executable present on the $PATH
+   dependency 'postgresql'
+diff --git a/omnibus/config/software/datadog-agent-integrations-py3.rb b/omnibus/config/software/datadog-agent-integrations-py3.rb
+index 04bf041707fb..b64b9b0081bc 100644
+--- a/omnibus/config/software/datadog-agent-integrations-py3.rb
++++ b/omnibus/config/software/datadog-agent-integrations-py3.rb
+@@ -15,7 +15,7 @@
+ dependency 'snowflake-connector-python-py3'
+ dependency 'confluent-kafka-python'
+ 
+-if arm?
++if arm? && !osx?
+   # psycopg2 doesn't come with pre-built wheel on the arm architecture.
+   # to compile from source, it requires the `pg_config` executable present on the $PATH
+   dependency 'postgresql'
