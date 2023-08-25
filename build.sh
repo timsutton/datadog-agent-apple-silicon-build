@@ -145,13 +145,15 @@ function run_build() {
         # --log-level=debug
 }
 
+env_setup_build_dirs
+env_setup_ruby
+
 sanity_checks
+
 fix_git
 setup_dd_agent_repo
 
-env_setup_build_dirs
 env_setup_python
 env_setup_go
-env_setup_ruby
 
 run_build
