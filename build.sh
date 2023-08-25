@@ -19,10 +19,9 @@ function setup_dd_agent_repo() {
     git checkout "${DD_VERSION}"
 
     # Apply patches (can we just apply all files in the patches dir instead?)
-    git apply "${script_dir}/patches/datadog-agent--mac-app-target.patch"
-    git apply "${script_dir}/patches/datadog-agent--py-integrations-wheels.patch"
-    git apply "${script_dir}/patches/datadog-agent--strip-bitcode-obsolete.patch"
-    git apply "${script_dir}/patches/datadog-agent--omnibus-forks.patch"
+    for patch_file in "${script_dir}/patches/"*.patch; do
+        git apply "${patch_file}"
+    done
 }
 
 function fix_git() {
