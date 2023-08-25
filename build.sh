@@ -8,6 +8,19 @@ DD_VERSION=7.46.0
 RELEASE_VERSION=release-a7
 
 script_dir=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
+brew_gettext_removed=
+
+trap cleanup EXIT
+
+function cleanup() {
+    if [ -n "${brew_gettext_removed}" ]; then
+        echo "Re-installing the homebrew gettext we'd removed"
+        HOMEBREW_NO_INSTALL_UPGRADE=1 \
+        HOMEBREW_NO_ENV_HINTS=1 \
+        HOMEBREW_NO_INSTALL_CLEANUP=1 \
+        brew install gettext
+    fi
+}
 
 function setup_dd_agent_repo() {
     if [ ! -d datadog-agent ]; then
@@ -37,11 +50,11 @@ function fix_git() {
 function sanity_checks() {
     # Brew env
     if brew ls | grep gettext >/dev/null; then
-        echo "Won't proceed since we found a 'gettext' in 'brew ls'. This is known to cause"
-        echo "issues in the build. Uninstall the brew gettext library by running:"
-        echo ""
-        echo "'brew rm --ignore-dependencies gettext'"
-        exit 1
+        # TODO: improve this text
+        echo "Found a 'gettext' in 'brew ls'. This is known to cause"
+        echo "issues in the build. uninstalling, we'll put it back at the end!"
+        brew rm --ignore-dependencies gettext
+        brew_gettext_removed=1
     fi
 
     # Python env
