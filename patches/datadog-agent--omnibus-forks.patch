@@ -15,7 +15,7 @@ index cfc4e0c28b34..7e636800f510 100644
 -gem 'omnibus-software', git: 'https://github.com/DataDog/omnibus-software.git', branch: (ENV['OMNIBUS_SOFTWARE_VERSION'] || 'master')
 +
 +# from tip of https://github.com/timsutton/omnibus-software/tree/apple-silicon
-+gem 'omnibus-software', git: 'https://github.com/timsutton/omnibus-software.git', ref: 'b36fcb54d16f1a9e8f17387548a42c3b0ef6904e'
++gem 'omnibus-software', git: 'https://github.com/timsutton/omnibus-software.git', ref: 'f0ae11f508a199132de4de58395c762cae03ecec'
  
  
  gem 'mixlib-cli', '~> 1.7.0'
