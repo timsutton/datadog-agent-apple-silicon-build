@@ -29,7 +29,7 @@ function setup_dd_agent_repo() {
 
     cd datadog-agent
     git fetch
-    git checkout "${DD_VERSION}"
+    git reset --hard "${DD_VERSION}"
 
     # Apply patches (can we just apply all files in the patches dir instead?)
     for patch_file in "${script_dir}/patches/"*.patch; do
