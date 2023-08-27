@@ -57,6 +57,11 @@ function sanity_checks() {
         brew_gettext_removed=1
     fi
 
+    if ! command -v cmake >/dev/null; then
+        echo "No cmake found. You can install it with brew: 'brew install cmake'"
+        exit 1
+    fi
+
     # Python env
     if ! command -v python3.9 >/dev/null; then
         echo "This script requires you have an available Python 3.9 in your PATH, but one couldn't"
