@@ -78,7 +78,11 @@ function env_setup_python() {
         "${python_exe}" -m venv venv
     fi
     source venv/bin/activate
+    # Include some fixes from https://github.com/DataDog/datadog-agent-buildimages/pull/419
+    python3 -m pip install distro==1.4.0 wheel==0.40.0
+    python3 -m pip install --no-build-isolation "cython<3.0.0" PyYAML==5.4.1
     pip install -r requirements.txt --disable-pip-version-check
+    pip uninstall -y cython
 }
 
 function env_setup_go() {
