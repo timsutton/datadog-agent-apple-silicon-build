@@ -7,7 +7,7 @@ DD_VERSION=7.46.0
 # override this as you wish: find these definitions in release.json
 RELEASE_VERSION=release-a7
 
-script_dir=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 brew_gettext_removed=
 
 trap cleanup EXIT
@@ -16,9 +16,9 @@ function cleanup() {
     if [ -n "${brew_gettext_removed}" ]; then
         echo "Re-installing the homebrew gettext we'd removed"
         HOMEBREW_NO_INSTALL_UPGRADE=1 \
-        HOMEBREW_NO_ENV_HINTS=1 \
-        HOMEBREW_NO_INSTALL_CLEANUP=1 \
-        brew install gettext
+            HOMEBREW_NO_ENV_HINTS=1 \
+            HOMEBREW_NO_INSTALL_CLEANUP=1 \
+            brew install gettext
     fi
 }
 
@@ -87,7 +87,7 @@ function env_setup_python() {
 
 function env_setup_go() {
     # go
-    command -v gimme > /dev/null || brew install gimme
+    command -v gimme >/dev/null || brew install gimme
     go_version=$(cat .go-version)
     eval "$(gimme "${go_version}")"
     inv check-go-version
@@ -110,7 +110,7 @@ function env_setup_build_dirs() {
 
 function env_setup_ruby() {
     # Attempt to discover RVM or chruby and select a Ruby 2.7 if available
-    if command -v rvm > /dev/null; then
+    if command -v rvm >/dev/null; then
         if rvm list | grep '2.7'; then
             rvm use 2.7
             echo "Selected Ruby $(which ruby) using rvm"
@@ -118,7 +118,7 @@ function env_setup_ruby() {
         fi
     fi
 
-    if command -v chruby > /dev/null; then
+    if command -v chruby >/dev/null; then
         if chruby | grep '2.7'; then
             chruby 2.7
             echo "Selected Ruby $(which ruby) using chruby"
@@ -151,7 +151,7 @@ function run_build() {
         --python-runtimes "3" \
         --major-version "7" \
         --release-version "${RELEASE_VERSION}"
-        # --log-level=debug
+    # --log-level=debug
 }
 
 env_setup_build_dirs
