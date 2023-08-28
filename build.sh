@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -eu -o pipefail
-
+set -x
 
 DD_VERSION=7.46.0
 # override this as you wish: find these definitions in release.json
@@ -62,9 +62,11 @@ function sanity_checks() {
         exit 1
     fi
 
-    # Python env
-    if ! command -v python3.9 >/dev/null; then
-        echo "This script requires you have an available Python 3.9 in your PATH, but one couldn't"
+    # Python env (naively checks for what we know homebrew installs)
+    # It's important to use 3.8:
+    # https://github.com/DataDog/datadog-agent/blame/main/docs/dev/agent_dev_env.md#L15-L18
+    if ! command -v python3.8 >/dev/null; then
+        echo "This script requires you have an available Python 3.8 in your PATH, but one couldn't"
         echo "be found. Exiting early."
         exit 1
     fi
@@ -72,17 +74,19 @@ function sanity_checks() {
 
 function env_setup_python() {
     # python
-    python_exe="$(command -v python3.9)"
-    if [ ! -d venv ]; then
-        mkdir venv
-        "${python_exe}" -m venv venv
-    fi
+    python_exe="$(command -v python3.8)"
+    rm -rf venv
+    # We have to create the build virtualenv using virtualenv and not `python -m venv` due
+    # to issues resolving Python initialization when building embedded Pythons:
+    # https://bugs.python.org/issue22213
+    $python_exe -m pip install 'virtualenv==20.24.3'
+    virtualenv venv
     source venv/bin/activate
     # Include some fixes from https://github.com/DataDog/datadog-agent-buildimages/pull/419
     python3 -m pip install distro==1.4.0 wheel==0.40.0
     python3 -m pip install --no-build-isolation "cython<3.0.0" PyYAML==5.4.1
-    pip install -r requirements.txt --disable-pip-version-check
-    pip uninstall -y cython
+    python3 -m pip install -r requirements.txt --disable-pip-version-check
+    python3 -m pip uninstall -y cython
 }
 
 function env_setup_go() {
@@ -97,6 +101,8 @@ function env_setup_go() {
 }
 
 function env_setup_build_dirs() {
+    sudo rm -rf /opt/datadog-agent ./vendor ./vendor-new /var/cache/omnibus/src/* ./omnibus/Gemfile.lock
+
     # required directories
     for builddir in /var/cache/omnibus /opt/datadog-agent; do
         if [ ! -d "${builddir}" ]; then
@@ -142,6 +148,7 @@ function env_setup_ruby() {
 function run_build() {
     # https://github.com/DataDog/datadog-agent/blob/main/docs/dev/agent_build.md
     # https://github.com/DataDog/datadog-agent/blob/main/docs/dev/agent_dev_env.md
+    # https://github.com/DataDog/datadog-agent/blob/main/docs/dev/agent_omnibus.md
 
     # including --log-level=debug so we get full configure/make output
     invoke \
@@ -150,8 +157,12 @@ function run_build() {
         --skip-sign \
         --python-runtimes "3" \
         --major-version "7" \
-        --release-version "${RELEASE_VERSION}"
-    # --log-level=debug
+        --release-version "${RELEASE_VERSION}" \
+        --log-level=debug
+
+    # building just the agent + python works fine
+    # invoke agent.build \
+    #     --build-include=python
 }
 
 env_setup_build_dirs
