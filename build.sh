@@ -31,8 +31,13 @@ function setup_dd_agent_repo() {
     git fetch
     git reset --hard "${DD_VERSION}"
 
-    # Apply patches (can we just apply all files in the patches dir instead?)
+    # Apply everything in /patches
     for patch_file in "${script_dir}/patches/"*.patch; do
+        git apply "${patch_file}"
+    done
+
+    # ..then apply any patches specific to this version
+    for patch_file in "${script_dir}/patches/${DD_VERSION}/"*.patch; do
         git apply "${patch_file}"
     done
 }
