@@ -53,6 +53,11 @@ function fix_git() {
 }
 
 function sanity_checks() {
+    if [ "$(uname -m)" != "arm64" ] || [ "$(uname)" != "Darwin" ]; then
+        echo "This script must be run on macOS on Apple Silicon."
+        exit 1
+    fi
+
     # Brew env
     if brew ls | grep gettext >/dev/null; then
         # scrub gettext's libs from the brew environment, due to:
