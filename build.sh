@@ -149,6 +149,11 @@ function env_setup_ruby() {
         echo "A ruby version other than 2.7 was detected. Switch first to a 2.7 Ruby version and retry."
         exit 1
     fi
+
+    # ffi-yajl has issues building on M1 and newer Xcodes, so override the build
+    # settings for this in Bundler. This is fixed on later releases, but
+    # https://github.com/chef/ffi-yajl/issues/115
+    bundle config build.ffi-yajl --with-ldflags="-Wl,-undefined,dynamic_lookup"
 }
 
 function run_build() {
