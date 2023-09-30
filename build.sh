@@ -55,9 +55,10 @@ function fix_git() {
 function sanity_checks() {
     # Brew env
     if brew ls | grep gettext >/dev/null; then
-        # TODO: improve this text
-        echo "Found a 'gettext' in 'brew ls'. This is known to cause"
-        echo "issues in the build. uninstalling, we'll put it back at the end!"
+        # scrub gettext's libs from the brew environment, due to:
+        # https://github.com/DataDog/datadog-agent-macos-build/blob/aa2bd128f333c2bf7400f32d00088917573130ba/.github/workflows/test.yaml#L52-L57
+        echo "Found a 'gettext' in 'brew ls'. This is known to cause issues in"
+        echo "the build. Uninstalling it now, we'll put it back at the end!"
         brew rm --ignore-dependencies gettext
         brew_gettext_removed=1
     fi
