@@ -1,0 +1,26 @@
+diff --git a/omnibus/config/software/datadog-agent-integrations-py2.rb b/omnibus/config/software/datadog-agent-integrations-py2.rb
+index f43f706a65..0200d798d5 100644
+--- a/omnibus/config/software/datadog-agent-integrations-py2.rb
++++ b/omnibus/config/software/datadog-agent-integrations-py2.rb
+@@ -12,7 +12,7 @@ dependency 'datadog-agent'
+ dependency 'pip2'
+ 
+ 
+-if arm?
++if arm? && !osx?
+   # same with libffi to build the cffi wheel
+   dependency 'libffi'
+   # same with libxml2 and libxslt to build the lxml wheel
+diff --git a/omnibus/config/software/datadog-agent-integrations-py3.rb b/omnibus/config/software/datadog-agent-integrations-py3.rb
+index 0b946cec85..b77ae2524a 100644
+--- a/omnibus/config/software/datadog-agent-integrations-py3.rb
++++ b/omnibus/config/software/datadog-agent-integrations-py3.rb
+@@ -15,7 +15,7 @@ dependency 'setuptools3'
+ dependency 'snowflake-connector-python-py3'
+ dependency 'confluent-kafka-python'
+ 
+-if arm?
++if arm? && !osx?
+   # same with libffi to build the cffi wheel
+   dependency 'libffi'
+   # same with libxml2 and libxslt to build the lxml wheel
