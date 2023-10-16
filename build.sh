@@ -37,9 +37,11 @@ function setup_dd_agent_repo() {
     done
 
     # ..then apply any patches specific to this version
-    for patch_file in "${script_dir}/patches/${DD_VERSION}/"*.patch; do
-        git apply "${patch_file}"
-    done
+    if [ -d "${script_dir}/patches/${DD_VERSION}/" ]; then
+        for patch_file in "${script_dir}/patches/${DD_VERSION}/"*.patch; do
+            git apply "${patch_file}"
+        done
+    fi
 }
 
 function fix_git() {
