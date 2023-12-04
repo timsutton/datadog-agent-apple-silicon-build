@@ -3,7 +3,7 @@
 set -eu -o pipefail
 set -x
 
-DD_VERSION="7.48.0"
+DD_VERSION="7.49.1"
 # override this as you wish: find these definitions in release.json
 RELEASE_VERSION=release-a7
 
