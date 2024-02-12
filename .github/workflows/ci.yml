@@ -20,5 +20,8 @@
             with:
               bundler-cache: true
 
+          - name: Install python
+            run: brew install python@3.8
+
           - name: Build
             run: ./build.sh
