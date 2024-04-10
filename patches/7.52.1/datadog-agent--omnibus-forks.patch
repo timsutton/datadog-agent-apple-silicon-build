@@ -8,8 +8,8 @@ index cfc4e0c28b34..7e636800f510 100644
  gem 'chef-sugar', git: 'https://github.com/chef/chef-sugar.git', tag: 'v3.6.0'
 -gem 'omnibus', git: 'https://github.com/DataDog/omnibus-ruby.git', ref: (ENV['OMNIBUS_RUBY_VERSION'] || 'datadog-5.5.0')
  
-+# from tip of https://github.com/timsutton/omnibus-ruby/tree/tsutton/datadog-5.5.0-apple-silicon
-+gem 'omnibus', git: 'https://github.com/timsutton/omnibus-ruby.git', ref: 'fd30852b5774db318372e146806a5d08d0211d90'
++# from tip of https://github.com/timsutton/omnibus-ruby/tree/datadog-5.5.0-7.52.x-apple-silicon
++gem 'omnibus', git: 'https://github.com/timsutton/omnibus-ruby.git', ref: '33c8a51c28d67e68de91d40e1fd6c83965455a2a'
  # Use Chef's software definitions. It is recommended that you write your own
  # software definitions, but you can clone/fork Chef's to get you started.
 -gem 'omnibus-software', git: 'https://github.com/DataDog/omnibus-software.git', ref: (ENV['OMNIBUS_SOFTWARE_VERSION'] || 'master')
