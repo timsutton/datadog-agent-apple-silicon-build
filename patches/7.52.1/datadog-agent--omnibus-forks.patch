@@ -14,8 +14,8 @@ index cfc4e0c28b34..7e636800f510 100644
  # software definitions, but you can clone/fork Chef's to get you started.
 -gem 'omnibus-software', git: 'https://github.com/DataDog/omnibus-software.git', ref: (ENV['OMNIBUS_SOFTWARE_VERSION'] || 'master')
 +
-+# from tip of https://github.com/timsutton/omnibus-software/tree/apple-silicon
-+gem 'omnibus-software', git: 'https://github.com/timsutton/omnibus-software.git', ref: 'f0ae11f508a199132de4de58395c762cae03ecec'
++# from tip of https://github.com/timsutton/omnibus-software/tree/datadog-7.52.0-apple-silicon
++gem 'omnibus-software', git: 'https://github.com/timsutton/omnibus-software.git', ref: 'f084a6b57ca2f97ac545d0ee8ff2e3cc60a38198'
  
  
  gem 'mixlib-cli', '~> 1.7.0'
