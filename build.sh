@@ -3,7 +3,7 @@
 set -eu -o pipefail
 set -x
 
-DD_VERSION="7.50.3"
+DD_VERSION="7.54.1"
 # override this as you wish: find these definitions in release.json
 RELEASE_VERSION=release-a7
 
@@ -78,8 +78,8 @@ function sanity_checks() {
     # Python env (naively checks for what we know homebrew installs)
     # It's important to use 3.8:
     # https://github.com/DataDog/datadog-agent/blame/main/docs/dev/agent_dev_env.md#L15-L18
-    if ! command -v python3.8 >/dev/null; then
-        echo "This script requires you have an available Python 3.8 in your PATH, but one couldn't"
+    if ! command -v python3.11 >/dev/null; then
+        echo "This script requires you have an available Python 3.11 in your PATH, but one couldn't"
         echo "be found. Exiting early."
         exit 1
     fi
@@ -87,19 +87,15 @@ function sanity_checks() {
 
 function env_setup_python() {
     # python
-    python_exe="$(command -v python3.8)"
+    python_exe="$(command -v python3.11)"
     rm -rf venv
     # We have to create the build virtualenv using virtualenv and not `python -m venv` due
     # to issues resolving Python initialization when building embedded Pythons:
     # https://bugs.python.org/issue22213
-    $python_exe -m pip install 'virtualenv==20.24.3'
+    $python_exe -m pip install 'virtualenv==20.26.3'
     virtualenv venv
     source venv/bin/activate
-    # Include some fixes from https://github.com/DataDog/datadog-agent-buildimages/pull/419
-    python3 -m pip install distro==1.4.0 wheel==0.40.0
-    python3 -m pip install --no-build-isolation "cython<3.0.0" PyYAML==5.4.1
     python3 -m pip install -r requirements.txt --disable-pip-version-check
-    python3 -m pip uninstall -y cython
 }
 
 function env_setup_go() {
@@ -171,7 +167,7 @@ function run_build() {
     # including --log-level=debug so we get full configure/make output
     invoke \
         --echo \
-        agent.omnibus-build \
+        omnibus.build \
         --skip-sign \
         --python-runtimes "3" \
         --major-version "7" \
