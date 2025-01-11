@@ -110,7 +110,9 @@ function env_setup_go() {
 }
 
 function env_setup_build_dirs() {
-    sudo rm -rf /opt/datadog-agent ./vendor ./vendor-new /var/cache/omnibus/src/* ./omnibus/Gemfile.lock
+    # temporarily skipping removal of /var/cache to see if we can speed up rebuilds during testing by not removing it
+    # sudo rm -rf /opt/datadog-agent ./vendor ./vendor-new /var/cache/omnibus/src/* ./omnibus/Gemfile.lock
+    sudo rm -rf /opt/datadog-agent ./vendor ./vendor-new ./omnibus/Gemfile.lock
 
     # required directories
     for builddir in /var/cache/omnibus /opt/datadog-agent; do
@@ -164,6 +166,8 @@ function run_build() {
     # https://github.com/DataDog/datadog-agent/blob/main/docs/dev/agent_dev_env.md
     # https://github.com/DataDog/datadog-agent/blob/main/docs/dev/agent_omnibus.md
 
+    # Trying this out
+    export OMNIBUS_GIT_CACHE_DIR=/tmp/omnibus-git-cache
     # including --log-level=debug so we get full configure/make output
     invoke \
         --echo \
